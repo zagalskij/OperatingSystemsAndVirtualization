@@ -1,0 +1,45 @@
+• Настроить статическую конфигурацию (без DHCP) в Ubuntu через ip и netplan.
+Настроить IP, маршрут по умолчанию и DNS-сервера (1.1.1.1 и 8.8.8.8).
+Проверить работоспособность сети.
+sudo ip addr add 192.168.0.100/24 dev enp0s3
+sudo nano /etc/netplan/02-networkd.yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp0s3:
+      dhcp4: no
+      addresses: [ 192.168.0.10/24 ]
+      gateway4: 192.168.0.1
+      nameservers:
+        addresses: [ 8.8.8.8, 1.1.1.1 ]
+ping ya.ru
+PING ya.ru (5.255.255.242) 56(84) bytes of data.
+64 bytes from ya.ru (5.255.255.242): icmp_seq=1 ttl=248 time=13.7 ms
+64 bytes from ya.ru (5.255.255.242): icmp_seq=2 ttl=248 time=13.6 ms
+64 bytes from ya.ru (5.255.255.242): icmp_seq=3 ttl=248 time=13.6 ms
+64 bytes from ya.ru (5.255.255.242): icmp_seq=4 ttl=248 time=13.6 ms
+• Настроить правила iptables для доступности сервисов на TCP-портах 22, 80 и 443.
+Также сервер должен иметь возможность устанавливать подключения к серверу обновлений.
+Остальные подключения запретить.
+# Разрешить loopback (localhost)
+sudo iptables -A INPUT -i lo -j ACCEPT
+sudo iptables -A OUTPUT -o lo -j ACCEPT
+# Разрешить подключения к портам 22, 80 и 443 (SSH, HTTP и HTTPS)
+sudo iptables -A INPUT -p tcp -m multiport --dports 22,80,443 -j ACCEPT
+sudo iptables -A OUTPUT -p tcp -m multiport --sports 22,80,443 -j ACCEPT
+-A OUTPUT -p udp -m udp --sport 1024:65535 --dport 53 -j ACCEPT
+-A INPUT -p udp -m udp --sport 53 --dport 1024:65535 -m state --state ESTABLISHED -j ACCEPT
+# Разрешить подключения к серверу обновлений (подставьте IP-адрес или домен вашего сервера обновлений)
+sudo iptables -A OUTPUT -p tcp -d dl.astralinux.ru --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+sudo iptables -A INPUT -p tcp -s dl.astralinux.ru --sport 80 -m state --state ESTABLISHED -j ACCEPT
+sudo iptables -A OUTPUT -p tcp -d dl.astralinux.ru --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
+sudo iptables -A INPUT -p tcp -s dl.astralinux.ru --sport 443 -m state --state ESTABLISHED -j ACCEPT
+• Запретить любой входящий трафик с IP 3.4.5.6.
+sudo iptables -I INPUT -s 1.2.3.4.5.6 -j DROP
+iptables v1.8.5 (nf_tables): host/network `1.2.3.4.5.6' not found
+IP-адрес должен состоять из четырех чисел, разделенных точками
+•* Запросы на порт 8090 перенаправлять на порт 80 (на этом же сервере).
+sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+•* Разрешить подключение по SSH только из сети 192.168.0.0/24.
+sudo iptables -A INPUT -p tcp -s 192.168.0.0/24 --dport 22 -j ACCEPT
