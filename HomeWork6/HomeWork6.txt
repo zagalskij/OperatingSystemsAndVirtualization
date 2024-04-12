@@ -1,0 +1,22 @@
+1. Установить Nginx и настроить его на работу с PHP-FPM
+sudo su
+apt install nginx
+apt install php8.1-fpm
+
+2. * Установить Apache. Настроить обработку PHP.
+Добиться одновременной работы с Nginx
+sudo apt install apache2
+apt install libapache2-mod-php8.1 php8.1
+service nginx stop
+sudo apt install libastraevents
+
+
+4. Установить MySQL. Создать новую базу данных и таблицу в ней
+apt install mariadb-server
+mysql
+CREATE DATABASE gb2;
+use gb2;
+CREATE TABLE test(id INT);
+
+
+
