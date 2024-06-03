@@ -1,55 +1,298 @@
-• Создать два произвольных файла.
-touch file1
-touch file2
-Первому присвоить права на чтение и запись для владельца и группы, только на чтение — для всех.
-В umask и так по умолчанию эти параметры
-Второму присвоить права на чтение и запись только для владельца. Сделать это в численном и символьном виде.
-chmod 600 file2
-chmod u=rw,go= file2
-Управление пользователями:
-* создать пользователя, используя утилиту useradd и adduser;
-sudo adduser user1
-sudo useradd user2
-* удалить пользователя, используя утилиту userdel.
-sudo userdel user2
-Управление группами:
-создать группу с использованием утилит groupadd и addgroup;
-sudo groupadd group1
-sudo addgroup group2
-попрактиковаться в смене групп у пользователей;
-sudo usermod -g group1 user1
-sudo useradd user2
-sudo usermod -g group2 user2
-добавить пользователя в группу, не меняя основной;
-sudo usermod -aG group1 db
-• Создать пользователя с правами суперпользователя. Сделать так, чтобы sudo не требовал пароль для выполнения команд.
-sudo adduser super
-sudo visudo
-добавляем строку
-super ALL=(ALL:ALL) NOPASSWD:ALL
-Дополнительные (необязательные) задания
-• Используя дополнительные материалы, выдать одному из созданных пользователей право на выполнение ряда команд, требующих прав суперпользователя (команды выбираем на своё усмотрение).
-добавляем строку
-user1 ALL=(ALL:ALL) /usr/bin/apt, /usr/sbin/usermod, /usr/sbin/userdel
-• Создать группу developer и нескольких пользователей, входящих в неё.
-sudo addgroup developer
-sudo adduser developer1
-sudo adduser developer2
-sudo adduser developer3
-sudo usermod -aG developer developer1
-sudo usermod -aG developer developer2
-sudo usermod -aG developer developer3
-Создать директорию для совместной работы.
-mkdir share
-Сделать так, чтобы созданные одними пользователями файлы могли изменять другие пользователи этой группы.
-sudo chown :developer share
-chmod g+s share/
-• Создать в директории для совместной работы поддиректорию для обмена файлами, но чтобы удалять файлы могли только их создатели.
-mkdir exchange
-chmod +t exchange/
-• Создать директорию, в которой есть несколько файлов.
-Сделать так, чтобы открыть файлы можно было, только зная имя файла, а через ls список файлов посмотреть было нельзя.
-mkdir secret_directory
-chmod 331 secret_directory
-cd secret_directory
-touch file1.txt file2.txt file3.txt
+• Подключить дополнительный репозиторий на выбор: Docker, Nginx, Oracle
+MySQL. Установить любой пакет из этого репозитория.
+
+sudo apt-get update
+
+Сущ:1 https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64 InRelease
+Сущ:2 https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-extended 1.7_x86-64 InRelease
+Сущ:3 https://deb.debian.org/debian buster InRelease
+Сущ:5 https://security.debian.org/debian-security buster/updates InRelease
+Пол:4 https://packages.microsoft.com/repos/code stable InRelease [3 590 B]
+Получено 3 590 B за 1с (4 935 B/s)
+Чтение списков пакетов… Готово
+N: Пропускается получение настроенного файла «main/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «contrib/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «non-free/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «main/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-extended 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «contrib/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-extended 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «non-free/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-extended 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+
+sudo apt-get install ca-certificates curl gnupg
+
+Чтение списков пакетов… Готово
+Построение дерева зависимостей
+Чтение информации о состоянии… Готово
+Уже установлен пакет ca-certificates самой новой версии (20230311ubuntu0.20.04.1).
+Уже установлен пакет curl самой новой версии (7.64.0-4+deb10u5+astra6).
+Уже установлен пакет gnupg самой новой версии (2.2.27-2+deb11u2.astra5).
+Обновлено 0 пакетов, установлено 0 новых пакетов, для удаления отмечено 0 пакетов, и 2 пакетов не обновлено.
+
+sudo install -m 0755 -d /etc/apt/keyrings
+
+sudo apt install curl
+
+Чтение списков пакетов… Готово
+Построение дерева зависимостей
+Чтение информации о состоянии… Готово
+Уже установлен пакет curl самой новой версии (7.64.0-4+deb10u5+astra6).
+Обновлено 0 пакетов, установлено 0 новых пакетов, для удаления отмечено 0 пакетов, и 2 пакетов не обновлено.
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian buster stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt-get update
+
+Сущ:1 https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64 InRelease
+Сущ:2 https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-extended 1.7_x86-64 InRelease
+Пол:3 https://download.docker.com/linux/debian buster InRelease [53,9 kB]
+Сущ:4 https://deb.debian.org/debian buster InRelease
+Сущ:5 https://security.debian.org/debian-security buster/updates InRelease
+Пол:7 https://download.docker.com/linux/debian buster/stable amd64 Packages [53,0 kB]
+Пол:6 https://packages.microsoft.com/repos/code stable InRelease [3 590 B]
+Получено 111 kB за 1с (151 kB/s)
+Чтение списков пакетов… Готово
+N: Пропускается получение настроенного файла «main/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «contrib/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «non-free/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «main/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-extended 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «contrib/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-extended 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «non-free/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-extended 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+Чтение списков пакетов… Готово
+Построение дерева зависимостей
+Чтение информации о состоянии… Готово
+Будут установлены следующие дополнительные пакеты:
+  dbus-user-session docker-ce-rootless-extras libslirp0 pigz slirp4netns
+Предлагаемые пакеты:
+  aufs-tools cgroupfs-mount | cgroup-lite
+Следующие НОВЫЕ пакеты будут установлены:
+  containerd.io dbus-user-session docker-buildx-plugin docker-ce docker-ce-cli docker-ce-rootless-extras docker-compose-plugin libslirp0 pigz slirp4netns
+Обновлено 0 пакетов, установлено 10 новых пакетов, для удаления отмечено 0 пакетов, и 2 пакетов не обновлено.
+Необходимо скачать 121 MB архивов.
+После данной операции объём занятого дискового пространства возрастёт на 434 MB.
+Хотите продолжить? [Д/н] Y
+Пол:1 https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64/main amd64 pigz amd64 2.4-1 [56,5 kB]
+Пол:2 https://download.docker.com/linux/debian buster/stable amd64 containerd.io amd64 1.6.32-1 [30,0 MB]
+Пол:3 https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64/main amd64 dbus-user-session amd64 1.12.24-0+deb11u1.astra.se8+ci2 [65,6 kB]
+Пол:4 https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64/main amd64 libslirp0 amd64 4.4.0-1+deb11u2 [57,5 kB]
+Пол:5 https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64/main amd64 slirp4netns amd64 1.0.1-1 [32,5 kB]
+Пол:6 https://download.docker.com/linux/debian buster/stable amd64 docker-buildx-plugin amd64 0.14.0-1~debian.10~buster [29,7 MB]
+Пол:7 https://download.docker.com/linux/debian buster/stable amd64 docker-ce-cli amd64 5:26.1.3-1~debian.10~buster [14,6 MB]
+Пол:8 https://download.docker.com/linux/debian buster/stable amd64 docker-ce amd64 5:26.1.3-1~debian.10~buster [25,2 MB]
+Пол:9 https://download.docker.com/linux/debian buster/stable amd64 docker-ce-rootless-extras amd64 5:26.1.3-1~debian.10~buster [9 325 kB]
+Пол:10 https://download.docker.com/linux/debian buster/stable amd64 docker-compose-plugin amd64 2.27.0-1~debian.10~buster [12,5 MB]
+Получено 121 MB за 27с (4 547 kB/s)
+Выбор ранее не выбранного пакета pigz.
+(Чтение базы данных … на данный момент установлено 274120 файлов и каталогов.)
+Подготовка к распаковке …/0-pigz_2.4-1_amd64.deb …
+Распаковывается pigz (2.4-1) …
+Выбор ранее не выбранного пакета containerd.io.
+Подготовка к распаковке …/1-containerd.io_1.6.32-1_amd64.deb …
+Распаковывается containerd.io (1.6.32-1) …
+Выбор ранее не выбранного пакета dbus-user-session.
+Подготовка к распаковке …/2-dbus-user-session_1.12.24-0+deb11u1.astra.se8+ci2_amd64.deb …
+Распаковывается dbus-user-session (1.12.24-0+deb11u1.astra.se8+ci2) …
+Выбор ранее не выбранного пакета docker-buildx-plugin.
+Подготовка к распаковке …/3-docker-buildx-plugin_0.14.0-1~debian.10~buster_amd64.deb …
+Распаковывается docker-buildx-plugin (0.14.0-1~debian.10~buster) …
+Выбор ранее не выбранного пакета docker-ce-cli.
+Подготовка к распаковке …/4-docker-ce-cli_5%3a26.1.3-1~debian.10~buster_amd64.deb …
+Распаковывается docker-ce-cli (5:26.1.3-1~debian.10~buster) …
+Выбор ранее не выбранного пакета docker-ce.
+Подготовка к распаковке …/5-docker-ce_5%3a26.1.3-1~debian.10~buster_amd64.deb …
+Распаковывается docker-ce (5:26.1.3-1~debian.10~buster) …
+Выбор ранее не выбранного пакета docker-ce-rootless-extras.
+Подготовка к распаковке …/6-docker-ce-rootless-extras_5%3a26.1.3-1~debian.10~buster_amd64.deb …
+Распаковывается docker-ce-rootless-extras (5:26.1.3-1~debian.10~buster) …
+Выбор ранее не выбранного пакета docker-compose-plugin.
+Подготовка к распаковке …/7-docker-compose-plugin_2.27.0-1~debian.10~buster_amd64.deb …
+Распаковывается docker-compose-plugin (2.27.0-1~debian.10~buster) …
+Выбор ранее не выбранного пакета libslirp0:amd64.
+Подготовка к распаковке …/8-libslirp0_4.4.0-1+deb11u2_amd64.deb …
+Распаковывается libslirp0:amd64 (4.4.0-1+deb11u2) …
+Выбор ранее не выбранного пакета slirp4netns.
+Подготовка к распаковке …/9-slirp4netns_1.0.1-1_amd64.deb …
+Распаковывается slirp4netns (1.0.1-1) …
+Настраивается пакет dbus-user-session (1.12.24-0+deb11u1.astra.se8+ci2) …
+Настраивается пакет docker-buildx-plugin (0.14.0-1~debian.10~buster) …
+Настраивается пакет containerd.io (1.6.32-1) …
+Устанавливается новая версия файла настройки /etc/containerd/config.toml …
+Настраивается пакет docker-compose-plugin (2.27.0-1~debian.10~buster) …
+Настраивается пакет docker-ce-cli (5:26.1.3-1~debian.10~buster) …
+Настраивается пакет libslirp0:amd64 (4.4.0-1+deb11u2) …
+Настраивается пакет pigz (2.4-1) …
+Настраивается пакет docker-ce-rootless-extras (5:26.1.3-1~debian.10~buster) …
+Настраивается пакет slirp4netns (1.0.1-1) …
+Настраивается пакет docker-ce (5:26.1.3-1~debian.10~buster) …
+Устанавливается новая версия файла настройки /etc/init.d/docker …
+Обрабатываются триггеры для xserver-xorg-core (2:1.20.14-1ubuntu1astra.se43) …
+update exec ids due to /usr/bin changed
+ls: невозможно получить доступ к '/etc/X11/trusted.d/*': Нет такого файла или каталога
+Обрабатываются триггеры для systemd (241-7~deb10u8astra.se32+ci4) …
+Обрабатываются триггеры для man-db (2.8.5-2) …
+Обрабатываются триггеры для libc-bin (2.28-10+deb10u2+ci202309131632+astra7) …
+Сканирование процессов...
+Сканирование кандидатов...
+Сканирование образов linux...
+
+Failed to check for processor microcode upgrades.
+
+Службы не требуют перезапуска.
+
+Контейнеры не требуют перезапуска.
+
+В сеансах пользователей нет устаревших процессов.
+
+• Установить и удалить deb-пакет с помощью dpkg.
+
+sudo wget http://ftp.us.debian.org/debian/pool/main/h/htop/htop_2.2.0-1+b1_amd64.deb -O htop.deb
+--2024-05-31 09:27:37--  http://ftp.us.debian.org/debian/pool/main/h/htop/htop_2.2.0-1+b1_amd64.deb
+Распознаётся ftp.us.debian.org (ftp.us.debian.org)… 208.80.154.139, 64.50.236.52, 64.50.233.100, ...
+Подключение к ftp.us.debian.org (ftp.us.debian.org)|208.80.154.139|:80... соединение установлено.
+HTTP-запрос отправлен. Ожидание ответа… 200 OK
+Длина: 92828 (91K) [application/vnd.debian.binary-package]
+Сохранение в: «htop.deb»
+
+htop.deb                                       100%[===================================================================================================>]  90,65K  --.-KB/s    за 0,06s
+
+2024-05-31 09:27:37 (1,42 MB/s) - «htop.deb» сохранён [92828/92828]
+
+sudo dpkg -i htop.deb
+
+Выбор ранее не выбранного пакета htop.
+(Чтение базы данных … на данный момент установлено 274390 файлов и каталогов.)
+Подготовка к распаковке htop.deb …
+Распаковывается htop (2.2.0-1+b1) …
+Настраивается пакет htop (2.2.0-1+b1) …
+Обрабатываются триггеры для xserver-xorg-core (2:1.20.14-1ubuntu1astra.se43) …
+update exec ids due to /usr/bin changed
+ls: невозможно получить доступ к '/etc/X11/trusted.d/*': Нет такого файла или каталога
+Обрабатываются триггеры для desktop-file-utils (0.26-1astra1) …
+Обрабатываются триггеры для mime-support (3.62) …
+Обрабатываются триггеры для man-db (2.8.5-2) …
+
+sudo dpkg -r htop
+
+(Чтение базы данных … на данный момент установлено 274399 файлов и каталогов.)
+Удаляется htop (2.2.0-1+b1) …
+Обрабатываются триггеры для man-db (2.8.5-2) …
+Обрабатываются триггеры для desktop-file-utils (0.26-1astra1) …
+Обрабатываются триггеры для mime-support (3.62) …
+Обрабатываются триггеры для xserver-xorg-core (2:1.20.14-1ubuntu1astra.se43) …
+update exec ids due to /usr/bin changed
+ls: невозможно получить доступ к '/etc/X11/trusted.d/*': Нет такого файла или каталога
+
+• Установить и удалить snap-пакет.
+
+sudo snap install telegram-desktop
+
+telegram-desktop 4.16.8 from Telegram FZ-LLC (telegram-desktop✓) installed
+
+sudo snap remove telegram-desktop
+
+telegram-desktop removed
+
+• Добавить задачу для выполнения каждые 3 минуты (создание директории,
+запись в файл).
+
+crontab -e
+*/3 * * * * mkdir /home/db/OperatingSystemsAndVirtualization/HomeWork4 &&
+echo "Text" >
+/home/db/OperatingSystemsAndVirtualization/HomeWork4/homework4.txt
+
+•* Подключить PPA-репозиторий на выбор. Установить из него пакет. Удалить
+PPA из системы.
+
+sudo add-apt-repository ppa:aslatter/ppa
+
+ More info: https://launchpad.net/~aslatter/+archive/ubuntu/ppa
+Press [ENTER] to continue or ctrl-c to cancel adding it
+
+gpg: создан щит с ключами '/tmp/tmpms3g0wd9/pubring.gpg'
+gpg: /tmp/tmpms3g0wd9/trustdb.gpg: создана таблица доверия
+gpg: ключ 52B24DF7D43B5377: импортирован открытый ключ "Launchpad PPA for Antoine Latter"
+gpg: Всего обработано: 1
+gpg:                  импортировано: 1
+gpg: не найдено данных формата OpenPGP.
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 52B24DF7D43B5377
+
+Executing: /tmp/apt-key-gpghome.rscUTIf1Kx/gpg.1.sh --keyserver keyserver.ubuntu.com --recv-keys 52B24DF7D43B5377
+gpg: ключ 52B24DF7D43B5377: импортирован открытый ключ "Launchpad PPA for Antoine Latter"
+gpg: Всего обработано: 1
+gpg:                  импортировано: 1
+
+
+zagalskij@sysadmin:/etc/apt$ sudo apt update
+Сущ:1 https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64 InRelease
+Сущ:2 https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-extended 1.7_x86-64 InRelease
+Пол:3 http://ppa.launchpad.net/aslatter/ppa/ubuntu bionic InRelease [15,9 kB]
+Пол:4 http://ppa.launchpad.net/aslatter/ppa/ubuntu bionic/main i386 Packages [480 B]
+Пол:5 http://ppa.launchpad.net/aslatter/ppa/ubuntu bionic/main amd64 Packages [476 B]
+Пол:6 http://ppa.launchpad.net/aslatter/ppa/ubuntu bionic/main Translation-en [188 B]
+Получено 17,0 kB за 1с (19,0 kB/s)
+Чтение списков пакетов… Готово
+Построение дерева зависимостей
+Чтение информации о состоянии… Готово
+Все пакеты имеют последние версии.
+N: Пропускается получение настроенного файла «non-free/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «contrib/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «main/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «main/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-extended 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «contrib/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-extended 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+N: Пропускается получение настроенного файла «non-free/binary-i386/Packages», так как репозиторий «https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-extended 1.7_x86-64 InRelease» не поддерживает архитектуру «i386»
+
+zagalskij@sysadmin:/etc/apt$ sudo apt install alacritty
+
+Чтение списков пакетов… Готово
+Построение дерева зависимостей
+Чтение информации о состоянии… Готово
+Будут установлены следующие дополнительные пакеты:
+  xclip
+Следующие НОВЫЕ пакеты будут установлены:
+  alacritty xclip
+Обновлено 0 пакетов, установлено 2 новых пакетов, для удаления отмечено 0 пакетов, и 0 пакетов не обновлено.
+Необходимо скачать 1 758 kB архивов.
+После данной операции объём занятого дискового пространства возрастёт на 6 330 kB.
+Хотите продолжить? [Д/н] Y
+Пол:1 https://dl.astralinux.ru/astra/stable/1.7_x86-64/repository-base 1.7_x86-64/main amd64 xclip amd64 0.13-1 [23,1 kB]
+Пол:2 http://ppa.launchpad.net/aslatter/ppa/ubuntu bionic/main amd64 alacritty amd64 0.4.3+1-20200718T125149-7a4b4a6 [1 734 kB]
+Получено 1 758 kB за 2с (775 kB/s)
+Выбор ранее не выбранного пакета alacritty.
+(Чтение базы данных … на данный момент установлено 274428 файлов и каталогов.)
+Подготовка к распаковке …/alacritty_0.4.3+1-20200718T125149-7a4b4a6_amd64.deb …
+Распаковывается alacritty (0.4.3+1-20200718T125149-7a4b4a6) …
+Выбор ранее не выбранного пакета xclip.
+Подготовка к распаковке …/xclip_0.13-1_amd64.deb …
+Распаковывается xclip (0.13-1) …
+Настраивается пакет xclip (0.13-1) …
+Настраивается пакет alacritty (0.4.3+1-20200718T125149-7a4b4a6) …
+update-alternatives: используется /usr/bin/alacritty для предоставления /usr/bin/x-terminal-emulator (x-terminal-emulator) в автоматическом режиме
+Обрабатываются триггеры для mime-support (3.62) …
+Обрабатываются триггеры для xserver-xorg-core (2:1.20.14-1ubuntu1astra.se43) …
+update exec ids due to /usr/bin changed
+ls: невозможно получить доступ к '/etc/X11/trusted.d/*': Нет такого файла или каталога
+Обрабатываются триггеры для man-db (2.8.5-2) …
+Обрабатываются триггеры для desktop-file-utils (0.26-1astra1) …
+Сканирование процессов...
+Сканирование образов linux...
+
+
+Failed to check for processor microcode upgrades.
+
+Службы не требуют перезапуска.
+
+Контейнеры не требуют перезапуска.
+
+В сеансах пользователей нет устаревших процессов.
+•* Создать задачу резервного копирования (tar) домашнего каталога
+пользователя. Реализовать с использованием пользовательских crontab-
+файлов.
+crontab -e
+0 5 * * 1 tar -zcf /var/backups/home.tgz /home/db/
+sudo chmod 757 backups
